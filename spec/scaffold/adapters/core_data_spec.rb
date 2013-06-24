@@ -24,7 +24,7 @@ describe Rack::Scaffold::Adapters::CoreData do
     it 'should create the artist successfully' do
       artist_attrs = get_artist_attributes
       post '/artists', artist_attrs
-      artist = Rack::Scaffold::Adapters::CoreData::Artist.first
+      artist = @adapter::Artist.first
       artist.should_not be_nil
       artist.name.should == artist_attrs[:name]
       artist.artistDescription.should == artist_attrs[:artistDescription]
@@ -33,17 +33,17 @@ describe Rack::Scaffold::Adapters::CoreData do
     it 'should update the artist successfully' do
       post '/artists', get_artist_attributes
       put '/artists/1/', :name => "Barbara"
-      artist = Rack::Scaffold::Adapters::CoreData::Artist.first
+      artist = @adapter::Artist.first
       artist.name.should == "Barbara"
     end
 
     it 'should delete the artist successfully' do
       artist_attrs = get_artist_attributes
       post '/artists', artist_attrs
-      artist = Rack::Scaffold::Adapters::CoreData::Artist.first(:name => artist_attrs[:name])
+      artist = @adapter::Artist.first(:name => artist_attrs[:name])
       artist.should_not be_nil
       delete "/artists/#{artist.id}"
-      artist = Rack::Scaffold::Adapters::CoreData::Artist.first(:name => artist_attrs[:name])
+      artist = @adapter::Artist.first(:name => artist_attrs[:name])
       artist.should be_nil
     end
   end
@@ -57,21 +57,21 @@ describe Rack::Scaffold::Adapters::CoreData do
 
     it 'should return the artist inserted' do
       post '/artists', get_artist_attributes
-      expected = { :artist => Rack::Scaffold::Adapters::CoreData::Artist.first }
+      expected = { :artist => @adapter::Artist.first }
       last_response.body.should == expected.to_json
     end
 
     it 'should return an artist list' do
       post '/artists', get_artist_attributes
       get '/artists'
-      expected = { :artists => Rack::Scaffold::Adapters::CoreData::Artist.all }
+      expected = { :artists => @adapter::Artist.all }
       last_response.body.should == expected.to_json
     end
 
     it 'should return one artist entity' do
       post '/artists', get_artist_attributes
       get '/artists/1'
-      expected = { :artist => Rack::Scaffold::Adapters::CoreData::Artist.first }
+      expected = { :artist => @adapter::Artist.first }
       last_response.body.should == expected.to_json
     end
   end
