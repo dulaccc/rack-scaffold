@@ -1,5 +1,20 @@
 require "spec_helper"
 
+# Add an accessor to access the @adaptor attribute
+module Rack
+  class Scaffold
+    attr_reader :adapter
+  end
+end
+
+RSpec.configure do |config|
+  def app
+    @scaffold_app = Rack::Scaffold.new model: './example/Example.xcdatamodeld'
+    @adapter = @scaffold_app.adapter
+    Rack::Lint.new(@scaffold_app)
+  end
+end
+
 describe Rack::Scaffold::Adapters::CoreData do
   def get_artist_attributes
     { :name => 'Serge Gainsbourg', :artistDescription => 'Renowned for his often provocative and scandalous releases' }
