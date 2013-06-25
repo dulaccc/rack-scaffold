@@ -40,5 +40,9 @@ module Rack::Scaffold::Adapters
     def update_timestamp_field
       self.attribute_names.include?("updated_at") ? "updated_at" : "updated_on"
     end
+
+    def relationships
+      @klass.reflect_on_all_associations.collect{|association| new ::Adapters::Relationship(association.name, association.collection?)}
+    end
   end
 end

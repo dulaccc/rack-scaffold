@@ -76,6 +76,23 @@ module Rack
         def update_timestamp_field
           raise NotImplementedError
         end
+
+        def relationships
+          raise NotImplementedError
+        end
+      end
+
+      class Relationship
+        attr_reader :name
+
+        def initialize(name, is_one_to_many)
+          @name = name
+          @is_one_to_many = is_one_to_many
+        end
+
+        def to_many?
+          return @is_one_to_many
+        end
       end
     end
   end

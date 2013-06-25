@@ -37,5 +37,8 @@ module Rack::Scaffold::Adapters
       defined?(::Sequel::Plugins::Timestamps) and @klass.plugins.include?(::Sequel::Plugins::Timestamps)
     end
 
+    def relationships
+      @klass.all_association_reflections.collect{|association| Relationship.new(association[:name], association[:type] == :one_to_many)}
+    end
   end
 end
